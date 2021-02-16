@@ -1,3 +1,5 @@
+import typing
+
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -8,10 +10,10 @@ from torch.optim import Adam
 from tqdm import tqdm
 
 from utils import MultiLayerPerceptron
-from utils import european_option_delta
 from utils import cash_equivalent
 from utils import clamp
 from utils import entropic_loss
+from utils import european_option_delta
 from utils import generate_geometric_brownian_motion
 
 seaborn.set_style("whitegrid")
@@ -59,11 +61,11 @@ class NoTransactionBandNet(torch.nn.Module):
         self.net = MultiLayerPerceptron(in_features, 2)
 
     def forward(self, x, prev):
-        delta = european_option_delta(x[:, 0], x[:, 1], x[:, 2])
+        no_cost_delta = european_option_delta(x[:, 0], x[:, 1], x[:, 2])
         band_width = self.net(x)
 
-        lower = delta - fn.leaky_relu(band_width[:, 0])
-        upper = delta + fn.leaky_relu(band_width[:, 1])
+        lower = no_cost_delta - fn.leaky_relu(band_width[:, 0])
+        upper = no_cost_delta + fn.leaky_relu(band_width[:, 1])
 
         return clamp(prev, lower, upper)
 
@@ -93,13 +95,13 @@ class FeedForwardNet(torch.nn.Module):
         self.net = MultiLayerPerceptron(in_features + 1, 1)
 
     def forward(self, x, prev):
-        delta = european_option_delta(x[:, 0], x[:, 1], x[:, 2])
+        no_cost_delta = european_option_delta(x[:, 0], x[:, 1], x[:, 2])
 
         x = torch.cat((x, prev.reshape(-1, 1)), 1)
         x = self.net(x).reshape(-1)
         x = torch.tanh(x)
 
-        return delta + x
+        return no_cost_delta + x
 
 
 if __name__ == "__main__":
