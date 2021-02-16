@@ -180,8 +180,6 @@ if __name__ == "__main__":
         prices = generate_geometric_brownian_motion(
             n_paths, maturity=maturity, dt=dt, volatility=volatility, device=DEVICE
         )
-        n_steps = prices.shape[0]
-
         prev = torch.zeros_like(prices[0])
 
         if liability == "european":
