@@ -121,33 +121,33 @@ if __name__ == "__main__":
 
     # ---
 
-    def european_payoff(spot, strike=1.0) -> torch.Tensor:
+    def european_payoff(prices, strike=1.0) -> torch.Tensor:
         """
         Return the payoff of a European option.
 
         Parameters
         ----------
-        spot : torch.Tensor, shape (n_steps, n_paths)
+        prices : torch.Tensor, shape (n_steps, n_paths)
 
         Returns
         -------
         payoff : torch.Tensor, shape (n_paths, )
         """
-        return fn.relu(spot[-1, :] - strike)
+        return fn.relu(prices[-1, :] - strike)
 
-    def lookback_payoff(spot, strike=1.03) -> torch.Tensor:
+    def lookback_payoff(prices, strike=1.03) -> torch.Tensor:
         """
         Return the payoff of a lookback option.
 
         Parameters
         ----------
-        spot : torch.Tensor, shape (n_steps, n_paths)
+        prices : torch.Tensor, shape (n_steps, n_paths)
 
         Returns
         -------
         payoff : torch.Tensor, shape (n_paths, )
         """
-        return fn.relu(torch.max(spot, dim=0).values - strike)
+        return fn.relu(torch.max(prices, dim=0).values - strike)
 
     # ---
 
@@ -180,26 +180,26 @@ if __name__ == "__main__":
         prices = generate_geometric_brownian_motion(
             n_paths, maturity=maturity, dt=dt, volatility=volatility, device=DEVICE
         )
-        n_steps = spot.shape[0]
+        n_steps = prices.shape[0]
 
-        prev = torch.zeros_like(spot[0])
+        prev = torch.zeros_like(prices[0])
 
         if liability == "european":
-            pnl = -european_payoff(spot)
+            pnl = -european_payoff(prices)
         if liability == "lookback":
-            pnl = -lookback_payoff(spot)
+            pnl = -lookback_payoff(prices)
 
-        for n in range(spot.shape[0] - 1):
+        for n in range(prices.shape[0] - 1):
             # log-moneyness, time_expiry, volatility
-            logm = torch.log(spot[n, :]).reshape(-1, 1)
+            logm = torch.log(prices[n, :]).reshape(-1, 1)
             time = torch.full_like(logm, maturity - n * dt)
             vola = torch.full_like(logm, volatility)
             x = torch.cat([logm, time, vola], 1)
 
             hedge = model(x, prev)
 
-            pnl += hedge * (spot[n + 1] - spot[n])
-            pnl -= c * torch.abs(hedge - prev) * spot[n]
+            pnl += hedge * (prices[n + 1] - prices[n])
+            pnl -= c * torch.abs(hedge - prev) * prices[n]
 
             prev = hedge
 
