@@ -68,7 +68,7 @@ class NoTransactionBandNet(torch.nn.Module):
         return clamp(prev, lower, upper)
 
 
-class FFNet(torch.nn.Module):
+class FeedForwardNet(torch.nn.Module):
     """
     Feed-forward network with BS delta.
     Parameters
