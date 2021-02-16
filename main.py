@@ -189,7 +189,7 @@ if __name__ == "__main__":
         if liability == "lookback":
             pnl = -lookback_payoff(spot)
 
-        for n in range(n_steps - 1):
+        for n in range(spot.shape[0] - 1):
             # log-moneyness, time_expiry, volatility
             logm = torch.log(spot[n, :]).reshape(-1, 1)
             time = torch.full_like(logm, maturity - n * dt)
