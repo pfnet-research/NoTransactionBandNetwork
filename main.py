@@ -365,7 +365,7 @@ if __name__ == "__main__":
         n_times=20,
     ) -> float:
         """
-        Evaluate a price of the given derivative.
+        Evaluate the premium of the given derivative.
 
         Parameters
         ----------
@@ -380,28 +380,30 @@ if __name__ == "__main__":
 
         Returns
         -------
-        price : torch.Tensor, shape (,)
+        premium : torch.Tensor, shape (,)
         """
         with torch.no_grad():
-            p = lambda: -cash_equivalent(compute_profit_and_loss(model, payoff, cost=cost))
+            p = lambda: -cash_equivalent(
+                compute_profit_and_loss(model, payoff, cost=cost)
+            )
             return torch.mean(torch.stack([p() for _ in range(n_times)])).item()
 
-
     # ---
 
     torch.manual_seed(42)
-    price_ntb = price(model_ntb, european_option_payoff, cost=1e-3)
+    premium_ntb = evaluate_premium(model_ntb, european_option_payoff, cost=1e-3)
     torch.manual_seed(42)
-    price_ffn = price(model_ffn, european_option_payoff, cost=1e-3)
+    premium_ffn = evaluate_premium(model_ffn, european_option_payoff, cost=1e-3)
 
     # ---
 
-    print("Price by no-transaction band network:\t", price_ntb)
-    print("Price by feed-forward band network:\t", price_ffn)
+    print("Premium evaluated by no-transaction band network:\t", premium_ntb)
+    print("Premium evaluated by feed-forward band network:\t", premium_ffn)
 
     # ---
 
-    print("Reduced price:\t", f"{(price_ffn - price_ntb) / price_ffn * 100:.4} %")
+    premium_reduced = (premium_ffn - premium_ntb) / premium_ffn * 100
+    print("Reduced premium:\t", f"{premium_reduced:.4f} %")
 
     torch.manual_seed(42)
     model_ntb = NoTransactionBandNet().to(DEVICE)
