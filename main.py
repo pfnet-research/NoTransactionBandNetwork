@@ -60,7 +60,7 @@ class NoTransactionBandNet(torch.nn.Module):
 
     def forward(self, x, prev):
         delta = european_option_delta(x[:, 0], x[:, 1], x[:, 2])
-        width = self.net(x)
+        band_width = self.net(x)
 
         lower = delta - fn.leaky_relu(width[:, 0])
         upper = delta + fn.leaky_relu(width[:, 1])
