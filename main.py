@@ -123,7 +123,7 @@ if __name__ == "__main__":
 
     def european_payoff(spot, strike=1.0) -> torch.Tensor:
         """
-        Return payoff of a European option.
+        Return the payoff of a European option.
 
         Parameters
         ----------
