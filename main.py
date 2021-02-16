@@ -176,7 +176,8 @@ if __name__ == "__main__":
         -------
         pnl : torch.Tensor, shape (n_paths,)
         """
-        spot = generate_gbm(
+        # prices: (time, batch)
+        prices = generate_gbm(
             n_paths, maturity=maturity, dt=dt, volatility=volatility, device=DEVICE
         )
         n_steps = spot.shape[0]
