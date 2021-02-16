@@ -33,27 +33,27 @@ def european_option_delta(log_moneyness, time_expiry, volatility) -> torch.Tenso
 
 def clamp(x, lower, upper) -> torch.Tensor:
     """
-    Clamp all elements in the input tensor into the range [`min_value`, `max_value`]
+    Clamp all elements in the input tensor into the range [`lower`, `upper`]
     and return a resulting tensor.
-    The bounds `min_value` and `max_value` can be tensors.
+    The bounds `lower` and `upper` can be tensors.
 
-    If min_value <= max_value:
+    If lower <= upper:
 
-        out = min_value if x < min_value
-              x if min_value <= x <= max_value
-              max_value if x > max_value
+        out = lower if x < lower
+              x if lower <= x <= upper
+              upper if x > upper
 
-    If min_value > max_value:
+    If lower > upper:
 
-        out = (min_value + max_value) / 2
+        out = (lower + upper) / 2
 
     Parameters
     ----------
     - x : torch.Tensor, shape (*)
         The input tensor.
-    - min_value : float or torch.Tensor, default None
+    - lower : float or torch.Tensor, default None
         Lower-bound of the range to be clamped to.
-    - max_value : float or torch.Tensor, default None
+    - upper : float or torch.Tensor, default None
         Upper-bound of the range to be clamped to.
 
     Returns
@@ -67,16 +67,16 @@ def clamp(x, lower, upper) -> torch.Tensor:
     >>> x
     tensor([-0.2000, -0.1000,  0.0000,  0.1000,  0.2000,  0.3000,  0.4000,  0.5000,
              0.6000,  0.7000,  0.8000,  0.9000,  1.0000,  1.1000,  1.2000])
-    >>> clamp(x, 0.0, 1.0)
+    >>> clamp(x, torch.tensor(0.0), torch.tensor(1.0))
     tensor([0.0000, 0.0000, 0.0000, 0.1000, 0.2000, 0.3000, 0.4000, 0.5000, 0.6000,
             0.7000, 0.8000, 0.9000, 1.0000, 1.0000, 1.0000])
 
     >>> x = torch.tensor([1.0, 0.0])
-    >>> clamp(x, [0.0, 1.0], 0.0)
+    >>> clamp(x, torch.tensor([0.0, 1.0]), torch.tensor(0.0))
     tensor([0.0000, 0.5000])
     """
-    x = torch.min(torch.max(x, min_value), max_value)
-    x = torch.where(min_value < max_value, x, (min_value + max_value) / 2)
+    x = torch.min(torch.max(x, lower), upper)
+    x = torch.where(lower < upper, x, (lower + upper) / 2)
     return x
 
 
