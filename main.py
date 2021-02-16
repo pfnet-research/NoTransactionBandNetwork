@@ -73,6 +73,7 @@ class NoTransactionBandNet(torch.nn.Module):
 class FeedForwardNet(torch.nn.Module):
     """
     Feed-forward network with BS delta.
+
     Parameters
     ----------
     - in_features : int, default 3
