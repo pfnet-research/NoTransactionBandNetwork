@@ -75,14 +75,8 @@ def clamp(x, min_value, max_value) -> torch.Tensor:
     >>> clamp(x, [0.0, 1.0], 0.0)
     tensor([0.0000, 0.5000])
     """
-    if min_value is not None:
-        min_value = torch.as_tensor(min_value)
-        x = torch.max(x, min_value)
-    if max_value is not None:
-        max_value = torch.as_tensor(max_value)
-        x = torch.min(x, max_value)
-    if min_value is not None and max_value is not None:
-        x = torch.where(min_value < max_value, x, (min_value + max_value) / 2)
+    x = torch.min(torch.max(x, min_value), max_value)
+    x = torch.where(min_value < max_value, x, (min_value + max_value) / 2)
     return x
 
 
