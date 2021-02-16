@@ -159,7 +159,7 @@ if __name__ == "__main__":
     def compute_profit_and_loss(
         model: torch.nn.Module,
         payoff: typing.Callable[[torch.Tensor], torch.Tensor],
-        c: float,
+        cost: float,
         n_paths=N_PATHS,
         maturity=30 / 365,
         dt=1 / 365,
@@ -174,7 +174,7 @@ if __name__ == "__main__":
             Model to fit.
         - payoff : callable[[torch.Tensor], torch.Tensor]
             Payoff function of the derivative to hedege.
-        - c : float
+        - cost : float
             Transaction cost of underlying asset.
 
         Returns
@@ -199,7 +199,7 @@ if __name__ == "__main__":
             hedge = model(x, prev)
 
             pnl += hedge * (prices[n + 1] - prices[n])
-            pnl -= c * torch.abs(hedge - prev) * prices[n]
+            pnl -= cost * torch.abs(hedge - prev) * prices[n]
 
             prev = hedge
 
@@ -229,9 +229,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    pnl_ntb = compute_profit_and_loss(model_ntb, european_option_payoff, c=1e-3)
+    pnl_ntb = compute_profit_and_loss(model_ntb, european_option_payoff, cost=1e-3)
     torch.manual_seed(42)
-    pnl_ffn = compute_profit_and_loss(model_ffn, european_option_payoff, c=1e-3)
+    pnl_ffn = compute_profit_and_loss(model_ffn, european_option_payoff, cost=1e-3)
 
     # ---
 
@@ -292,7 +292,7 @@ if __name__ == "__main__":
 
         for i in iterations:
             optim.zero_grad()
-            pnl = compute_profit_and_loss(model, payoff, c=c)
+            pnl = compute_profit_and_loss(model, payoff, cost=cost)
             loss = entropic_loss(pnl)
             loss.backward()
             optim.step()
@@ -305,9 +305,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    history_ntb = fit(model_ntb, european_option_payoff, c=1e-3)
+    history_ntb = fit(model_ntb, european_option_payoff, cost=1e-3)
     torch.manual_seed(42)
-    history_ffn = fit(model_ffn, european_option_payoff, c=1e-3)
+    history_ffn = fit(model_ffn, european_option_payoff, cost=1e-3)
 
     # ---
 
@@ -323,9 +323,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    pnl_ntb = compute_profit_and_loss(model_ntb, european_option_payoff, c=1e-3)
+    pnl_ntb = compute_profit_and_loss(model_ntb, european_option_payoff, cost=1e-3)
     torch.manual_seed(42)
-    pnl_ffn = compute_profit_and_loss(model_ffn, european_option_payoff, c=1e-3)
+    pnl_ffn = compute_profit_and_loss(model_ffn, european_option_payoff, cost=1e-3)
 
     # ---
 
@@ -380,16 +380,16 @@ if __name__ == "__main__":
         price : torch.Tensor, shape (,)
         """
         with torch.no_grad():
-            p = lambda: -cash_equivalent(compute_profit_and_loss(model, payoff, c))
+            p = lambda: -cash_equivalent(compute_profit_and_loss(model, payoff, cost=cost))
             return torch.mean(torch.stack([p() for _ in range(n_times)])).item()
 
 
     # ---
 
     torch.manual_seed(42)
-    price_ntb = price(model_ntb, european_option_payoff, c=1e-3)
+    price_ntb = price(model_ntb, european_option_payoff, cost=1e-3)
     torch.manual_seed(42)
-    price_ffn = price(model_ffn, european_option_payoff, c=1e-3)
+    price_ffn = price(model_ffn, european_option_payoff, cost=1e-3)
 
     # ---
 
@@ -408,9 +408,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    history_ntb = fit(model_ntb, lookback_option_payoff, c=1e-3)
+    history_ntb = fit(model_ntb, lookback_option_payoff, cost=1e-3)
     torch.manual_seed(42)
-    history_ffn = fit(model_ffn, lookback_option_payoff, c=1e-3)
+    history_ffn = fit(model_ffn, lookback_option_payoff, cost=1e-3)
 
     # ---
 
