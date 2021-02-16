@@ -78,6 +78,7 @@ class FeedForwardNet(torch.nn.Module):
     ----------
     - in_features : int, default 3
         Number of input features.
+
     Examples
     --------
     >>> _ = torch.manual_seed(42)
@@ -133,6 +134,7 @@ if __name__ == "__main__":
         Parameters
         ----------
         prices : torch.Tensor, shape (n_steps, n_paths)
+            Prices of the underlying asset.
 
         Returns
         -------
@@ -147,6 +149,7 @@ if __name__ == "__main__":
         Parameters
         ----------
         prices : torch.Tensor, shape (n_steps, n_paths)
+            Prices of the underlying asset.
 
         Returns
         -------
@@ -179,7 +182,7 @@ if __name__ == "__main__":
 
         Returns
         -------
-        pnl : torch.Tensor, shape (n_paths,)
+        profit_and_loss : torch.Tensor, shape (n_paths,)
         """
         # prices: (time, batch)
         prices = generate_geometric_brownian_motion(

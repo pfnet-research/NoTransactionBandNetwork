@@ -10,12 +10,12 @@ def european_option_delta(log_moneyness, time_expiry, volatility) -> torch.Tenso
 
     Parameters
     ----------
-    - s : torch.Tensor
-        log moneyness.
-    - t : torch.Tensor
-        Time to expiry.
-    - v : torch.Tensor
-        Volatility.
+    - log_moneyness : torch.Tensor
+        Log moneyness of the underlying asset.
+    - time_expiry : torch.Tensor
+        Time to the expiry of the European option.
+    - volatility : torch.Tensor
+        Volatility of the underlying asset.
 
     Returns
     -------
@@ -149,7 +149,7 @@ def generate_geometric_brownian_motion(
     Returns
     -------
     geometric_brownian_motion : torch.Tensor, shape (N_STEPS, N_PATHS)
-        Here `N_PATH = int(maturity / dt)`.
+        Paths of geometric brownian motions. Here `N_PATH = int(maturity / dt)`.
 
     Examples
     --------
@@ -171,7 +171,7 @@ def generate_geometric_brownian_motion(
 def entropic_loss(pnl) -> torch.Tensor:
     """
     Return entropic loss function, which is a negative of
-    the expected entropic utility:
+    the expected exponential utility:
 
         loss(pnl) = -E[u(pnl)], u(x) = -exp(-x)
 
@@ -182,7 +182,7 @@ def entropic_loss(pnl) -> torch.Tensor:
 
     Returns
     -------
-    loss : torch.Tensor, shape (,)
+    entropic_loss : torch.Tensor, shape (,)
 
     Examples
     --------
@@ -195,8 +195,10 @@ def entropic_loss(pnl) -> torch.Tensor:
 
 def cash_equivalent(pnl) -> torch.Tensor:
     """
-    Return cash equivalent of profit-loss distribution
-    with respect to entropic exponential utility.
+    Return cash equivalent of profit-loss distribution.
+
+    Cash equivalent is the guaranteed amount of cash which is as preferable as
+    the original profit-loss distribution in terms of the exponential utility.
 
     Parameters
     ----------
@@ -210,7 +212,11 @@ def cash_equivalent(pnl) -> torch.Tensor:
     Examples
     --------
     >>> pnl = -torch.arange(4.0)
-    >>> cash_equivalent(pnl)
+    >>> cash = cash_equivalent(pnl)
+    >>> cash
     tensor(-2.0539)
+
+    >>> torch.isclose(entropic_loss(torch.full_like(pnl, cash)), entropic_loss(pnl))
+    tensor(True)
     """
     return -torch.log(entropic_loss(pnl))
