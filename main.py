@@ -8,7 +8,7 @@ from torch.optim import Adam
 from tqdm import tqdm
 
 from utils import MultiLayerPerceptron
-from utils import bs_delta
+from utils import european_option_delta
 from utils import cash_equivalent
 from utils import clamp
 from utils import entropic_loss
@@ -59,7 +59,7 @@ class NTBNet(torch.nn.Module):
         self.net = MultiLayerPerceptron(in_features, 2)
 
     def forward(self, x, prev):
-        delta = bs_delta(x[:, 0], x[:, 1], x[:, 2])
+        delta = european_option_delta(x[:, 0], x[:, 1], x[:, 2])
         width = self.net(x)
 
         lower = delta - fn.leaky_relu(width[:, 0])
@@ -93,7 +93,7 @@ class FFNet(torch.nn.Module):
         self.net = MultiLayerPerceptron(in_features + 1, 1)
 
     def forward(self, x, prev):
-        delta = bs_delta(x[:, 0], x[:, 1], x[:, 2])
+        delta = european_option_delta(x[:, 0], x[:, 1], x[:, 2])
 
         x = torch.cat((x, prev.reshape(-1, 1)), 1)
         x = self.net(x).reshape(-1)

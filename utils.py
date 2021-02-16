@@ -23,7 +23,7 @@ def european_option_delta(log_moneyness, time_expiry, volatility) -> torch.Tenso
 
     Examples
     --------
-    >>> bs_delta([-0.01, 0.00, 0.01], 0.1, 0.2)
+    >>> european_option_delta([-0.01, 0.00, 0.01], 0.1, 0.2)
     tensor([0.4497, 0.5126, 0.5752])
     """
     s, t, v = map(torch.as_tensor, (log_moneyness, time_expiry, volatility))
