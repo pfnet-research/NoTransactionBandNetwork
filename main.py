@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
     # ---
 
-    def european_payoff(prices, strike=1.0) -> torch.Tensor:
+    def european_option_payoff(prices, strike=1.0) -> torch.Tensor:
         """
         Return the payoff of a European option.
 
@@ -139,7 +139,7 @@ if __name__ == "__main__":
         """
         return fn.relu(prices[-1, :] - strike)
 
-    def lookback_payoff(prices, strike=1.03) -> torch.Tensor:
+    def lookback_option_payoff(prices, strike=1.03) -> torch.Tensor:
         """
         Return the payoff of a lookback option.
 
@@ -171,8 +171,8 @@ if __name__ == "__main__":
         ----------
         - model : torch.nn.Module
             Model to fit.
-        - liability : {"european", "lookback"}
-            Liability to hedge.
+        - payoff : callable[[torch.Tensor], torch.Tensor]
+            Payoff function of the derivative to hedege.
         - c : float
             Transaction cost of underlying asset.
 
@@ -186,10 +186,7 @@ if __name__ == "__main__":
         )
         prev = torch.zeros_like(prices[0])
 
-        if liability == "european":
-            pnl = -european_payoff(prices)
-        if liability == "lookback":
-            pnl = -lookback_payoff(prices)
+        pnl = -payoff(prices)
 
         for n in range(prices.shape[0] - 1):
             # log-moneyness, time_expiry, volatility
@@ -231,9 +228,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    pnl_ntb = compute_profit_and_loss(model_ntb, "european", c=1e-3)
+    pnl_ntb = compute_profit_and_loss(model_ntb, european_option_payoff, c=1e-3)
     torch.manual_seed(42)
-    pnl_ffn = compute_profit_and_loss(model_ffn, "european", c=1e-3)
+    pnl_ffn = compute_profit_and_loss(model_ffn, european_option_payoff, c=1e-3)
 
     # ---
 
@@ -262,16 +259,21 @@ if __name__ == "__main__":
 
     # ---
 
-    def fit(model, liability, c, n_epochs=N_EPOCHS) -> list:
+    def fit(
+        model,
+        payoff: typing.Callable[[torch.Tensor], torch.Tensor],
+        c,
+        n_epochs=N_EPOCHS,
+    ) -> list:
         """
-        Fit a model to hedge the given liability.
+        Fit a model to hedge the given derivative.
 
         Parameters
         ----------
         - model : torch.nn.Module
             Model to fit.
-        - liability : {"european", "lookback"}
-            Liability to hedge.
+        - payoff : callable[[torch.Tensor], torch.Tensor]
+            Payoff function of the derivative to hedege.
         - c : float, default 0.0
             Transaction cost of underlying asset.
         - n_epochs : int, default N_EPOCHS
@@ -289,7 +291,7 @@ if __name__ == "__main__":
 
         for i in iterations:
             optim.zero_grad()
-            pnl = compute_profit_and_loss(model, liability, c=c)
+            pnl = compute_profit_and_loss(model, payoff, c=c)
             loss = entropic_loss(pnl)
             loss.backward()
             optim.step()
@@ -302,9 +304,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    history_ntb = fit(model_ntb, "european", c=1e-3)
+    history_ntb = fit(model_ntb, european_option_payoff, c=1e-3)
     torch.manual_seed(42)
-    history_ffn = fit(model_ffn, "european", c=1e-3)
+    history_ffn = fit(model_ffn, european_option_payoff, c=1e-3)
 
     # ---
 
@@ -320,9 +322,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    pnl_ntb = compute_profit_and_loss(model_ntb, "european", c=1e-3)
+    pnl_ntb = compute_profit_and_loss(model_ntb, european_option_payoff, c=1e-3)
     torch.manual_seed(42)
-    pnl_ffn = compute_profit_and_loss(model_ffn, "european", c=1e-3)
+    pnl_ffn = compute_profit_and_loss(model_ffn, european_option_payoff, c=1e-3)
 
     # ---
 
@@ -352,7 +354,9 @@ if __name__ == "__main__":
 
     # ---
 
-    def price(model, liability, c, n_times=20) -> float:
+    def price(
+        model, payoff: typing.Callable[[torch.Tensor], torch.Tensor], c, n_times=20
+    ) -> float:
         """
         Evaluate a price of the given derivative.
 
@@ -360,8 +364,8 @@ if __name__ == "__main__":
         ----------
         - model : torch.nn.Module
             Model to fit.
-        - liability : {"european", "lookback"}
-            Liability to hedge.
+        - payoff : callable[[torch.Tensor], torch.Tensor]
+            Payoff function of the derivative to hedege.
         - c : float, default 0.0
             Transaction cost of underlying asset.
         - n_times : int, default 200
@@ -372,22 +376,22 @@ if __name__ == "__main__":
         price : torch.Tensor, shape (,)
         """
         with torch.no_grad():
-            p = lambda: -cash_equivalent(compute_profit_and_loss(model, liability, c))
+            p = lambda: -cash_equivalent(compute_profit_and_loss(model, payoff, c))
             return torch.mean(torch.stack([p() for _ in range(n_times)])).item()
 
     # ---
 
-    def fit_price(model, liability, c):
-        history = fit(model, liability, c)
-        p = price(model, liability, c)
+    def fit_price(model, payoff, c):
+        history = fit(model, payoff, c)
+        p = price(model, payoff, c)
         return history, p
 
     # ---
 
     torch.manual_seed(42)
-    price_ntb = price(model_ntb, "european", c=1e-3)
+    price_ntb = price(model_ntb, european_option_payoff, c=1e-3)
     torch.manual_seed(42)
-    price_ffn = price(model_ffn, "european", c=1e-3)
+    price_ffn = price(model_ffn, european_option_payoff, c=1e-3)
 
     # ---
 
@@ -406,9 +410,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    history_ntb, price_ntb = fit_price(model_ntb, "lookback", c=1e-3)
+    history_ntb, price_ntb = fit_price(model_ntb, lookback_option_payoff, c=1e-3)
     torch.manual_seed(42)
-    history_ffn, price_ffn = fit_price(model_ffn, "lookback", c=1e-3)
+    history_ffn, price_ffn = fit_price(model_ffn, lookback_option_payoff, c=1e-3)
 
     # ---
 
