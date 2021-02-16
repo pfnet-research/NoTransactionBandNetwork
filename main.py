@@ -382,12 +382,6 @@ if __name__ == "__main__":
             p = lambda: -cash_equivalent(compute_profit_and_loss(model, payoff, c))
             return torch.mean(torch.stack([p() for _ in range(n_times)])).item()
 
-    # ---
-
-    def fit_price(model, payoff, c):
-        history = fit(model, payoff, c)
-        p = price(model, payoff, c)
-        return history, p
 
     # ---
 
