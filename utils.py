@@ -135,7 +135,7 @@ class Net(torch.nn.ModuleList):
         return x
 
 
-def generate_gbm(
+def generate_geometric_brownian_motion(
     n_paths, maturity=30 / 365, dt=1 / 365, volatility=0.2, device=None
 ) -> torch.Tensor:
     """
