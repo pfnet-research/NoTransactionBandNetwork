@@ -314,7 +314,7 @@ if __name__ == "__main__":
     plt.figure()
     plt.plot(history_ntb, label="No-transaction band Network")
     plt.plot(history_ffn, label="Feed-forward Network")
-    plt.xlabel("Number of simulations")
+    plt.xlabel("Number of epochs")
     plt.ylabel("Loss (Negative of expected utility)")
     plt.title("Learning history for a European option")
     plt.legend()
