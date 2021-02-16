@@ -355,7 +355,7 @@ if __name__ == "__main__":
 
     # ---
 
-    def price(
+    def evaluate_premium(
         model: torch.nn.Module,
         payoff: typing.Callable[[torch.Tensor], torch.Tensor],
         c: float,
