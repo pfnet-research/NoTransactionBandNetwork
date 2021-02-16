@@ -182,7 +182,7 @@ if __name__ == "__main__":
         )
         n_steps = spot.shape[0]
 
-        prev = torch.zeros((n_paths,)).to(DEVICE)
+        prev = torch.zeros_like(spot[0])
 
         if liability == "european":
             pnl = -european_payoff(spot)
