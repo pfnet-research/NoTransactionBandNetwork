@@ -398,8 +398,8 @@ if __name__ == "__main__":
 
     # ---
 
-    print("Premium evaluated by no-transaction band network:\t", premium_ntb)
-    print("Premium evaluated by feed-forward band network:\t", premium_ffn)
+    print("Premium evaluated by no-transaction band network :\t", premium_ntb)
+    print("Premium evaluated by feed-forward band network   :\t", premium_ffn)
 
     # ---
 
