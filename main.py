@@ -12,7 +12,7 @@ from utils import bs_delta
 from utils import cash_equivalent
 from utils import clamp
 from utils import entropic_loss
-from utils import generate_gbm
+from utils import generate_geometric_brownian_motion
 
 seaborn.set_style("whitegrid")
 
@@ -177,7 +177,7 @@ if __name__ == "__main__":
         pnl : torch.Tensor, shape (n_paths,)
         """
         # prices: (time, batch)
-        prices = generate_gbm(
+        prices = generate_geometric_brownian_motion(
             n_paths, maturity=maturity, dt=dt, volatility=volatility, device=DEVICE
         )
         n_steps = spot.shape[0]

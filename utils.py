@@ -154,13 +154,13 @@ def generate_geometric_brownian_motion(
 
     Returns
     -------
-    gbm : torch.Tensor, shape (N_STEPS, N_PATHS)
+    geometric_brownian_motion : torch.Tensor, shape (N_STEPS, N_PATHS)
         Here `N_PATH = int(maturity / dt)`.
 
     Examples
     --------
     >>> _ = torch.manual_seed(42)
-    >>> generate_gbm(3, maturity=5 / 365)
+    >>> generate_geometric_brownian_motion(3, maturity=5 / 365)
     tensor([[1.0000, 1.0000, 1.0000],
             [1.0023, 0.9882, 0.9980],
             [1.0257, 0.9816, 1.0027],
@@ -171,9 +171,9 @@ def generate_geometric_brownian_motion(
     randn[0, :] = 0.0
     bm = volatility * torch.sqrt(torch.tensor(dt)) * randn.cumsum(0)
     t = torch.linspace(0, maturity, int(maturity / dt)).reshape(-1, 1)
-    gbm = torch.exp(bm - (volatility ** 2) * t / 2)
-    gbm = gbm.to(device=device)
-    return gbm
+    geometric_brownian_motion = torch.exp(bm - (volatility ** 2) * t / 2)
+    geometric_brownian_motion = geometric_brownian_motion.to(device=device)
+    return geometric_brownian_motion
 
 
 def entropic_loss(pnl) -> torch.Tensor:
