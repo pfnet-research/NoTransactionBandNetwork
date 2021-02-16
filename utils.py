@@ -103,9 +103,9 @@ class MultiLayerPerceptron(torch.nn.ModuleList):
 
     Examples
     --------
-    >>> net = Net(3, 1)
-    >>> net
-    Net(
+    >>> mlp = MultiLayerPerceptron(3, 1)
+    >>> mlp
+    MultiLayerPerceptron(
       (0): Linear(in_features=3, out_features=32, bias=True)
       (1): ReLU()
       (2): Linear(in_features=32, out_features=32, bias=True)
@@ -116,7 +116,7 @@ class MultiLayerPerceptron(torch.nn.ModuleList):
       (7): ReLU()
       (8): Linear(in_features=32, out_features=1, bias=True)
     )
-    >>> net(torch.empty(2, 3))
+    >>> mlp(torch.empty(2, 3))
     tensor([[...],
             [...]], grad_fn=<AddmmBackward>)
     """

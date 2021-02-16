@@ -7,7 +7,7 @@ import torch.nn.functional as fn
 from torch.optim import Adam
 from tqdm import tqdm
 
-from utils import Net
+from utils import MultiLayerPerceptron
 from utils import bs_delta
 from utils import cash_equivalent
 from utils import clamp
@@ -56,7 +56,7 @@ class NTBNet(torch.nn.Module):
 
     def __init__(self, in_features=3):
         super().__init__()
-        self.net = Net(in_features, 2)
+        self.net = MultiLayerPerceptron(in_features, 2)
 
     def forward(self, x, prev):
         delta = bs_delta(x[:, 0], x[:, 1], x[:, 2])
@@ -90,7 +90,7 @@ class FFNet(torch.nn.Module):
 
     def __init__(self, in_features=3):
         super().__init__()
-        self.net = Net(in_features + 1, 1)
+        self.net = MultiLayerPerceptron(in_features + 1, 1)
 
     def forward(self, x, prev):
         delta = bs_delta(x[:, 0], x[:, 1], x[:, 2])
