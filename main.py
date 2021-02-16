@@ -137,7 +137,7 @@ if __name__ == "__main__":
 
     def lookback_payoff(spot, strike=1.03) -> torch.Tensor:
         """
-        Return payoff of a lookback option.
+        Return the payoff of a lookback option.
 
         Parameters
         ----------
