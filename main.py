@@ -151,9 +151,9 @@ if __name__ == "__main__":
 
     # ---
 
-    def compute_pnl(
+    def compute_profit_and_loss(
         model,
-        liability,
+        payoff: typing.Callable[[torch.Tensor], torch.Tensor],
         c,
         n_paths=N_PATHS,
         maturity=30 / 365,
