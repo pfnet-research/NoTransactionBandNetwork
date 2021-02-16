@@ -413,9 +413,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    history_ntb, price_ntb = fit_price(model_ntb, lookback_option_payoff, c=1e-3)
+    history_ntb = fit(model_ntb, lookback_option_payoff, c=1e-3)
     torch.manual_seed(42)
-    history_ffn, price_ffn = fit_price(model_ffn, lookback_option_payoff, c=1e-3)
+    history_ffn = fit(model_ffn, lookback_option_payoff, c=1e-3)
 
     # ---
 
