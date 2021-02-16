@@ -86,7 +86,7 @@ def clamp(x, min_value, max_value) -> torch.Tensor:
     return x
 
 
-class Net(torch.nn.ModuleList):
+class MultiLayerPerceptron(torch.nn.ModuleList):
     """
     Feed-forward neural network.
 
