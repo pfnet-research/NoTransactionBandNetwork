@@ -262,7 +262,7 @@ if __name__ == "__main__":
     def fit(
         model: torch.nn.Module,
         payoff: typing.Callable[[torch.Tensor], torch.Tensor],
-        c: float,
+        cost: float,
         n_epochs=N_EPOCHS,
     ) -> list:
         """
