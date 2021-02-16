@@ -31,7 +31,7 @@ def european_option_delta(log_moneyness, time_expiry, volatility) -> torch.Tenso
     return normal.cdf((s + (v ** 2 / 2) * t) / (v * torch.sqrt(t)))
 
 
-def clamp(x, min_value, max_value) -> torch.Tensor:
+def clamp(x, lower, upper) -> torch.Tensor:
     """
     Clamp all elements in the input tensor into the range [`min_value`, `max_value`]
     and return a resulting tensor.
