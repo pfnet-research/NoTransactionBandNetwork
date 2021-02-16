@@ -229,9 +229,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    pnl_ntb = compute_pnl(model_ntb, "european", c=1e-3)
+    pnl_ntb = compute_profit_and_loss(model_ntb, "european", c=1e-3)
     torch.manual_seed(42)
-    pnl_ffn = compute_pnl(model_ffn, "european", c=1e-3)
+    pnl_ffn = compute_profit_and_loss(model_ffn, "european", c=1e-3)
 
     # ---
 
@@ -287,7 +287,7 @@ if __name__ == "__main__":
 
         for i in iterations:
             optim.zero_grad()
-            pnl = compute_pnl(model, liability, c=c)
+            pnl = compute_profit_and_loss(model, liability, c=c)
             loss = entropic_loss(pnl)
             loss.backward()
             optim.step()
@@ -318,9 +318,9 @@ if __name__ == "__main__":
     # ---
 
     torch.manual_seed(42)
-    pnl_ntb = compute_pnl(model_ntb, "european", c=1e-3)
+    pnl_ntb = compute_profit_and_loss(model_ntb, "european", c=1e-3)
     torch.manual_seed(42)
-    pnl_ffn = compute_pnl(model_ffn, "european", c=1e-3)
+    pnl_ffn = compute_profit_and_loss(model_ffn, "european", c=1e-3)
 
     # ---
 
@@ -370,7 +370,7 @@ if __name__ == "__main__":
         price : torch.Tensor, shape (,)
         """
         with torch.no_grad():
-            p = lambda: -cash_equivalent(compute_pnl(model, liability, c))
+            p = lambda: -cash_equivalent(compute_profit_and_loss(model, liability, c))
             return torch.mean(torch.stack([p() for _ in range(n_times)])).item()
 
     # ---
