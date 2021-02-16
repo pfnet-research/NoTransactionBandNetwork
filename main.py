@@ -111,8 +111,10 @@ if __name__ == "__main__":
 
     # ---
 
+    # In each epoch, N_PATHS brownian motion time-series are generated.
     N_PATHS = 50000
-    N_SIMULATIONS = 200
+    # How many times a model is updated in the experiment. 
+    N_EPOCHS = 200
 
     # ---
 
