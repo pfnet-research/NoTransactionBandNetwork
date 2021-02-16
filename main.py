@@ -32,7 +32,7 @@ matplotlib.rcParams["lines.linewidth"] = 2
 matplotlib.rcParams["axes.linewidth"] = 1.6
 
 
-class NTBNet(torch.nn.Module):
+class NoTransactionBandNet(torch.nn.Module):
     """
     No-Transaction Band network.
 
