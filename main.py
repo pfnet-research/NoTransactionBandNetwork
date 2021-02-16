@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
     # ---
 
-    def european_option_payoff(prices, strike=1.0) -> torch.Tensor:
+    def european_option_payoff(prices: torch.Tensor, strike=1.0) -> torch.Tensor:
         """
         Return the payoff of a European option.
 
@@ -139,7 +139,7 @@ if __name__ == "__main__":
         """
         return fn.relu(prices[-1, :] - strike)
 
-    def lookback_option_payoff(prices, strike=1.03) -> torch.Tensor:
+    def lookback_option_payoff(prices: torch.Tensor, strike=1.03) -> torch.Tensor:
         """
         Return the payoff of a lookback option.
 
@@ -156,9 +156,9 @@ if __name__ == "__main__":
     # ---
 
     def compute_profit_and_loss(
-        model,
+        model: torch.nn.Module,
         payoff: typing.Callable[[torch.Tensor], torch.Tensor],
-        c,
+        c: float,
         n_paths=N_PATHS,
         maturity=30 / 365,
         dt=1 / 365,
@@ -260,9 +260,9 @@ if __name__ == "__main__":
     # ---
 
     def fit(
-        model,
+        model: torch.nn.Module,
         payoff: typing.Callable[[torch.Tensor], torch.Tensor],
-        c,
+        c: float,
         n_epochs=N_EPOCHS,
     ) -> list:
         """
@@ -355,7 +355,10 @@ if __name__ == "__main__":
     # ---
 
     def price(
-        model, payoff: typing.Callable[[torch.Tensor], torch.Tensor], c, n_times=20
+        model: torch.nn.Module,
+        payoff: typing.Callable[[torch.Tensor], torch.Tensor],
+        c: float,
+        n_times=20,
     ) -> float:
         """
         Evaluate a price of the given derivative.
