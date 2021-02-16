@@ -4,7 +4,7 @@ from torch.nn import Linear
 from torch.nn import ReLU
 
 
-def bs_delta(log_moneyness, time_expiry, volatility) -> torch.Tensor:
+def european_option_delta(log_moneyness, time_expiry, volatility) -> torch.Tensor:
     """
     Return Black-Scholes delta of European option.
 
