@@ -276,7 +276,7 @@ if __name__ == "__main__":
         - payoff : callable[[torch.Tensor], torch.Tensor]
             Payoff function of the derivative to hedege.
         - c : float, default 0.0
-            Transaction cost of underlying asset.
+            Transaction cost of the underlying asset.
         - n_epochs : int, default N_EPOCHS
             How many times a model is updated in the experiment.
 
