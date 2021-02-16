@@ -44,7 +44,7 @@ class NoTransactionBandNet(torch.nn.Module):
     Examples
     --------
     >>> _ = torch.manual_seed(42)
-    >>> m = NTBNet()
+    >>> m = NoTransactionBandNet()
     >>> x = torch.tensor([
     ...     [-0.01, 0.1, 0.2],
     ...     [ 0.00, 0.1, 0.2],
@@ -78,7 +78,7 @@ class FeedForwardNet(torch.nn.Module):
     Examples
     --------
     >>> _ = torch.manual_seed(42)
-    >>> m = FFNet(3)
+    >>> m = FeedForwardNet(3)
     >>> x = torch.tensor([
     ...     [-0.01, 0.1, 0.2],
     ...     [ 0.00, 0.1, 0.2],
@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
     # In each epoch, N_PATHS brownian motion time-series are generated.
     N_PATHS = 50000
-    # How many times a model is updated in the experiment. 
+    # How many times a model is updated in the experiment.
     N_EPOCHS = 200
 
     # ---
@@ -207,24 +207,24 @@ if __name__ == "__main__":
 
     # ---
 
-    # Definition of NTBNet comes here
+    # Definition of NoTransactionBandNet comes here
 
-    # class NTBNet(torch.nn.Module):
+    # class NoTransactionBandNet(torch.nn.Module):
     #     ...
 
     # ---
 
-    # Definition of FFNet comes here
+    # Definition of FeedForwardNet comes here
 
-    # class FFNet(torch.nn.Module):
+    # class FeedForwardNet(torch.nn.Module):
     #     ...
 
     # ---
 
     torch.manual_seed(42)
-    model_ntb = NTBNet().to(DEVICE)
+    model_ntb = NoTransactionBandNet().to(DEVICE)
     torch.manual_seed(42)
-    model_ffn = FFNet().to(DEVICE)
+    model_ffn = FeedForwardNet().to(DEVICE)
 
     # ---
 
@@ -397,9 +397,9 @@ if __name__ == "__main__":
     print("Reduced price:\t", f"{(price_ffn - price_ntb) / price_ffn * 100:.4} %")
 
     torch.manual_seed(42)
-    model_ntb = NTBNet().to(DEVICE)
+    model_ntb = NoTransactionBandNet().to(DEVICE)
     torch.manual_seed(42)
-    model_ffn = FFNet().to(DEVICE)
+    model_ffn = FeedForwardNet().to(DEVICE)
 
     # ---
 
