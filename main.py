@@ -260,7 +260,7 @@ if __name__ == "__main__":
 
     # ---
 
-    def fit(model, liability, c, n_simulations=N_SIMULATIONS) -> list:
+    def fit(model, liability, c, n_epochs=N_EPOCHS) -> list:
         """
         Fit a model to hedge the given liability.
 
@@ -272,8 +272,8 @@ if __name__ == "__main__":
             Liability to hedge.
         - c : float, default 0.0
             Transaction cost of underlying asset.
-        - n_simulations : int, default 200
-            Number of simulations.
+        - n_epochs : int, default N_EPOCHS
+            How many times a model is updated in the experiment.
 
         Returns
         -------
@@ -283,7 +283,7 @@ if __name__ == "__main__":
         optim = Adam(model.parameters())
 
         history = []
-        iterations = tqdm(range(n_simulations))
+        iterations = tqdm(range(n_epochs))
 
         for i in iterations:
             optim.zero_grad()
