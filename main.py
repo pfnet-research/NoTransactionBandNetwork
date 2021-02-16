@@ -375,8 +375,9 @@ if __name__ == "__main__":
             Payoff function of the derivative to hedege.
         - c : float, default 0.0
             Transaction cost of underlying asset.
-        - n_times : int, default 200
-            Number of simulations.
+        - n_times : int, default 20
+            If `n_times > 1`, return ensemble mean of the results
+            from multiple simulations.
 
         Returns
         -------
