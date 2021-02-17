@@ -160,7 +160,7 @@ if __name__ == "__main__":
     # ---
 
     def compute_profit_and_loss(
-        model: torch.nn.Module,
+        hedging_model: torch.nn.Module,
         payoff: typing.Callable[[torch.Tensor], torch.Tensor],
         cost: float,
         n_paths=N_PATHS,
