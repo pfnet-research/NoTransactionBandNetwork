@@ -193,11 +193,10 @@ if __name__ == "__main__":
         pnl = -payoff(prices)
 
         for n in range(prices.shape[0] - 1):
-            # log-moneyness, time_expiry, volatility
-            logm = torch.log(prices[n, :]).reshape(-1, 1)
-            time = torch.full_like(logm, maturity - n * dt)
-            vola = torch.full_like(logm, volatility)
-            x = torch.cat([logm, time, vola], 1)
+            x_log_moneyness = prices[n, :, None].log()
+            x_time_expiry = torch.full_like(x_log_moneyness, maturity - n * dt)
+            x_volatility = torch.full_like(x_log_moneyness, volatility)
+            x = torch.cat([x_log_moneyness, x_time_expiry, x_volatility], 1)
 
             hedge = model(x, prev)
 
