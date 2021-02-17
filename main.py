@@ -10,11 +10,11 @@ from torch.optim import Adam
 from tqdm import tqdm
 
 from utils import MultiLayerPerceptron
-from utils import cash_equivalent
 from utils import clamp
 from utils import entropic_loss
 from utils import european_option_delta
 from utils import generate_geometric_brownian_motion
+from utils import to_premium
 
 seaborn.set_style("whitegrid")
 

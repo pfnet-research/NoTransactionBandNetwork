@@ -193,11 +193,11 @@ def entropic_loss(pnl) -> torch.Tensor:
     return -torch.mean(-torch.exp(-pnl))
 
 
-def cash_equivalent(pnl) -> torch.Tensor:
+def to_premium(pnl) -> torch.Tensor:
     """
-    Return cash equivalent of profit-loss distribution.
+    Return the premium corresponding to the given profit-loss distribution.
 
-    Cash equivalent is the guaranteed amount of cash which is as preferable as
+    Premium is defined as the guaranteed amount of cash which is as preferable as
     the original profit-loss distribution in terms of the exponential utility.
 
     Parameters
@@ -207,16 +207,16 @@ def cash_equivalent(pnl) -> torch.Tensor:
 
     Returns
     -------
-    cash_equivaluent : torch.Tensor, shape (,)
+    premium : torch.Tensor, shape (,)
 
     Examples
     --------
     >>> pnl = -torch.arange(4.0)
-    >>> cash = cash_equivalent(pnl)
-    >>> cash
+    >>> premium = to_premium(pnl)
+    >>> premium
     tensor(-2.0539)
 
-    >>> torch.isclose(entropic_loss(torch.full_like(pnl, cash)), entropic_loss(pnl))
+    >>> torch.isclose(entropic_loss(torch.full_like(pnl, premium)), entropic_loss(pnl))
     tensor(True)
     """
     return -torch.log(entropic_loss(pnl))
