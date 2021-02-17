@@ -380,7 +380,7 @@ if __name__ == "__main__":
 
         Returns
         -------
-        premium : torch.Tensor, shape (,)
+        premium : float
         """
         with torch.no_grad():
             p = lambda: -cash_equivalent(
