@@ -383,10 +383,10 @@ if __name__ == "__main__":
         premium : float
         """
         with torch.no_grad():
-            p = lambda: -cash_equivalent(
+            p = lambda: -to_premium(
                 compute_profit_and_loss(model, payoff, cost=cost)
-            )
-            return torch.mean(torch.stack([p() for _ in range(n_times)])).item()
+            ).item()
+            return float(np.mean([p() for _ in range(n_times)])))
 
     # ---
 
