@@ -36,7 +36,7 @@ matplotlib.rcParams["axes.linewidth"] = 1.6
 
 class NoTransactionBandNet(torch.nn.Module):
     """
-    No-Transaction Band network.
+    No-transaction band network.
 
     Parameters
     ----------
@@ -72,7 +72,7 @@ class NoTransactionBandNet(torch.nn.Module):
 
 class FeedForwardNet(torch.nn.Module):
     """
-    Feed-forward network with BS delta.
+    Feed-forward network with Black-Scholes delta.
 
     Parameters
     ----------
@@ -277,7 +277,7 @@ if __name__ == "__main__":
             Hedging model to fit.
         - payoff : callable[[torch.Tensor], torch.Tensor]
             Payoff function of the derivative to hedege.
-        - c : float, default 0.0
+        - cost : float, default 0.0
             Transaction cost of the underlying asset.
         - n_epochs : int, default N_EPOCHS
             How many times a hedging model is updated in the experiment.
@@ -372,7 +372,7 @@ if __name__ == "__main__":
             Hedging model to fit.
         - payoff : callable[[torch.Tensor], torch.Tensor]
             Payoff function of the derivative to hedege.
-        - c : float, default 0.0
+        - cost : float, default 0.0
             Transaction cost of underlying asset.
         - n_times : int, default 20
             If `n_times > 1`, return ensemble mean of the results
@@ -403,7 +403,7 @@ if __name__ == "__main__":
     # ---
 
     premium_reduced = (premium_ffn - premium_ntb) / premium_ffn * 100
-    print("Reduced premium:\t", f"{premium_reduced:.4f} %")
+    print("Reduced premium :\t", f"{premium_reduced:.4f} %")
 
     torch.manual_seed(42)
     model_ntb = NoTransactionBandNet().to(DEVICE)

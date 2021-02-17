@@ -6,7 +6,7 @@ from torch.nn import ReLU
 
 def european_option_delta(log_moneyness, time_expiry, volatility) -> torch.Tensor:
     """
-    Return Black-Scholes delta of European option.
+    Return Black-Scholes' delta of a European option.
 
     Parameters
     ----------
@@ -90,9 +90,9 @@ class MultiLayerPerceptron(torch.nn.ModuleList):
         Number of input features.
     - out_features : int
         Number of output features.
-    - n_layers : int
+    - n_layers : int, default 4
         Number of hidden layers.
-    - n_units : int, default
+    - n_units : int, default 32
         Number of units in each hidden layer.
 
     Examples
