@@ -405,6 +405,8 @@ if __name__ == "__main__":
     premium_reduced = (premium_ffn - premium_ntb) / premium_ffn * 100
     print("Reduced premium :\t", f"{premium_reduced:.4f} %")
 
+    # ---
+
     torch.manual_seed(42)
     model_ntb = NoTransactionBandNet().to(DEVICE)
     torch.manual_seed(42)
@@ -422,8 +424,25 @@ if __name__ == "__main__":
     plt.figure()
     plt.plot(history_ntb, label="No-transaction band Network")
     plt.plot(history_ffn, label="Feed-forward Network")
-    plt.xlabel("Number of simulations")
+    plt.xlabel("Number of epochs")
     plt.ylabel("Loss (Negative of expected utility)")
     plt.title("Learning history for a lookback option")
     plt.legend()
     plt.show()
+
+    # ---
+
+    torch.manual_seed(42)
+    premium_ntb = evaluate_premium(model_ntb, lookback_option_payoff, cost=1e-3)
+    torch.manual_seed(42)
+    premium_ffn = evaluate_premium(model_ffn, lookback_option_payoff, cost=1e-3)
+
+    # ---
+
+    print("Premium evaluated by no-transaction band network :\t", premium_ntb)
+    print("Premium evaluated by feed-forward band network   :\t", premium_ffn)
+
+    # ---
+
+    premium_reduced = (premium_ffn - premium_ntb) / premium_ffn * 100
+    print("Reduced premium :\t", f"{premium_reduced:.4f} %")
