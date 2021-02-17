@@ -173,8 +173,8 @@ if __name__ == "__main__":
 
         Parameters
         ----------
-        - model : torch.nn.Module
-            Model to fit.
+        - hedging_model : torch.nn.Module
+            Hedging model to fit.
         - payoff : callable[[torch.Tensor], torch.Tensor]
             Payoff function of the derivative to hedege.
         - cost : float
@@ -198,7 +198,7 @@ if __name__ == "__main__":
             x_volatility = torch.full_like(x_log_moneyness, volatility)
             x = torch.cat([x_log_moneyness, x_time_expiry, x_volatility], 1)
 
-            hedge = model(x, prev)
+            hedge = hedging_model(x, prev)
 
             pnl += hedge * (prices[n + 1] - prices[n])
             pnl -= cost * torch.abs(hedge - prev) * prices[n]
@@ -263,38 +263,38 @@ if __name__ == "__main__":
     # ---
 
     def fit(
-        model: torch.nn.Module,
+        hedging_model: torch.nn.Module,
         payoff: typing.Callable[[torch.Tensor], torch.Tensor],
         cost: float,
         n_epochs=N_EPOCHS,
     ) -> list:
         """
-        Fit a model to hedge the given derivative.
+        Fit a hedging model to hedge the given derivative.
 
         Parameters
         ----------
-        - model : torch.nn.Module
-            Model to fit.
+        - hedging_model : torch.nn.Module
+            Hedging model to fit.
         - payoff : callable[[torch.Tensor], torch.Tensor]
             Payoff function of the derivative to hedege.
         - c : float, default 0.0
             Transaction cost of the underlying asset.
         - n_epochs : int, default N_EPOCHS
-            How many times a model is updated in the experiment.
+            How many times a hedging model is updated in the experiment.
 
         Returns
         -------
         history : list[float]
             Training history.
         """
-        optim = Adam(model.parameters())
+        optim = Adam(hedging_model.parameters())
 
         history = []
         iterations = tqdm(range(n_epochs))
 
         for i in iterations:
             optim.zero_grad()
-            pnl = compute_profit_and_loss(model, payoff, cost=cost)
+            pnl = compute_profit_and_loss(hedging_model, payoff, cost=cost)
             loss = entropic_loss(pnl)
             loss.backward()
             optim.step()
@@ -358,7 +358,7 @@ if __name__ == "__main__":
     # ---
 
     def evaluate_premium(
-        model: torch.nn.Module,
+        hedging_model: torch.nn.Module,
         payoff: typing.Callable[[torch.Tensor], torch.Tensor],
         cost: float,
         n_times=20,
@@ -368,8 +368,8 @@ if __name__ == "__main__":
 
         Parameters
         ----------
-        - model : torch.nn.Module
-            Model to fit.
+        - hedging_model : torch.nn.Module
+            Hedging model to fit.
         - payoff : callable[[torch.Tensor], torch.Tensor]
             Payoff function of the derivative to hedege.
         - c : float, default 0.0
@@ -384,9 +384,9 @@ if __name__ == "__main__":
         """
         with torch.no_grad():
             p = lambda: -to_premium(
-                compute_profit_and_loss(model, payoff, cost=cost)
+                compute_profit_and_loss(hedging_model, payoff, cost=cost)
             ).item()
-            return float(np.mean([p() for _ in range(n_times)])))
+            return float(np.mean([p() for _ in range(n_times)]))
 
     # ---
 
