@@ -101,7 +101,7 @@ def lookback_option_payoff(prices: torch.Tensor, strike=1.03) -> torch.Tensor:
 
 # %%
 """
-### Compute profit and loss after hedging
+### Compute profit and loss with hedging
 
 A dealer sells a derivative to its customer and obliges a liability to settle the payoff at maturity.
 
