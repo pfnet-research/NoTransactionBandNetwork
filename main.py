@@ -258,6 +258,11 @@ torch.manual_seed(42)
 model_ffn = FeedForwardNet().to(DEVICE)
 
 # %%
+"""
+### Compute profit and loss before training
+"""
+
+# %%
 torch.manual_seed(42)
 pnl_ntb = compute_profit_and_loss(model_ntb, european_option_payoff, cost=1e-3)
 torch.manual_seed(42)
