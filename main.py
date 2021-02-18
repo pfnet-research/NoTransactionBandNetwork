@@ -136,26 +136,31 @@ def compute_profit_and_loss(
     -------
     profit_and_loss : torch.Tensor, shape (n_paths,)
     """
-    # prices: (time, batch)
+    # Prepare time-series of prices: (time, batch)
     prices = generate_geometric_brownian_motion(
         n_paths, maturity=maturity, dt=dt, volatility=volatility, device=DEVICE
     )
-    prev = torch.zeros_like(prices[0])
 
-    pnl = -payoff(prices)
-
+    # Simulate hedging over time.
+    hedge = 0
     for n in range(prices.shape[0] - 1):
+        # Prepare a model input.
         x_log_moneyness = prices[n, :, None].log()
         x_time_expiry = torch.full_like(x_log_moneyness, maturity - n * dt)
         x_volatility = torch.full_like(x_log_moneyness, volatility)
         x = torch.cat([x_log_moneyness, x_time_expiry, x_volatility], 1)
 
-        hedge = hedging_model(x, prev)
+        # Infer a preferable hedge ratio.
+        prev_hedge = hedge
+        hedge = hedging_model(x, prev_hedge)
 
+        # Receive profit/loss from the original asset.
         pnl += hedge * (prices[n + 1] - prices[n])
-        pnl -= cost * torch.abs(hedge - prev) * prices[n]
+        # Pay transaction cost.
+        pnl -= cost * torch.abs(hedge - prev_hedge) * prices[n]
 
-        prev = hedge
+    # Pay the option's payoff to the customer.
+    pnl = -payoff(prices)
 
     return pnl
 
