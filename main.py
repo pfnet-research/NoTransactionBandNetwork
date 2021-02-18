@@ -59,7 +59,7 @@ def to_numpy(tensor: torch.Tensor) -> np.array:
 
 We prepare a European option and a lookback option.
 European option is the most popular option.
-Lookback option is a path-dependent option, and its payoff depends on the price history.
+Lookback option is an exotic option whose payoff depends on the price history.
 """
 
 # %%
