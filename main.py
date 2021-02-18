@@ -285,7 +285,7 @@ plt.hist(
     label="Feed-forward Network",
 )
 plt.title(
-    "Profit-loss histograms of 50000 price paths " "for a European option (before fit)"
+    "Profit-loss histograms of 50000 price paths for a European option (before fit)"
 )
 plt.xlabel("Profit-loss")
 plt.ylabel("Number of events")
@@ -393,7 +393,7 @@ plt.hist(
     label="Feed-forward Network",
 )
 plt.title(
-    "Profit-loss histograms of 50000 price paths " "for a European option (after fit)"
+    "Profit-loss histograms of 50000 price paths for a European option (after fit)"
 )
 plt.xlabel("Profit-loss")
 plt.ylabel("Number of events")
