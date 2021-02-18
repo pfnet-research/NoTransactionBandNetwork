@@ -317,8 +317,8 @@ def fit(
 
     Returns
     -------
-    history : list[float]
-        Training history.
+    loss_history : list[float]
+        History of training loss.
     """
     optim = Adam(hedging_model.parameters())
 
