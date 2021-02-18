@@ -164,7 +164,7 @@ def generate_geometric_brownian_motion(
     randn = torch.randn((int(maturity / dt), n_paths), device=device)
     randn[0, :] = 0.0
     bm = volatility * (dt ** 0.5) * randn.cumsum(0)
-    t = torch.linspace(0, maturity, int(maturity / dt))[:, None]
+    t = torch.linspace(0, maturity, int(maturity / dt))[:, None].to(bm)
     return torch.exp(bm - (volatility ** 2) * t / 2)
 
 
