@@ -13,7 +13,7 @@ Minimal implementation of "*No-Transaction Band Network: A Neural Network Archit
 
 The learning histories below demonstrate that the no-transaction band network can be trained much quicker than the ordinary feed-forward network (See our paper for details).
 
-![loss_lookback](fig/lb_history_10.pdf)
+![loss_lookback](fig/lb_history_10.png)
 
 ## Proposed Architecture: No-Transaction Band Network
 
