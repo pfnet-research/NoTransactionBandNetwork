@@ -397,7 +397,7 @@ plt.show()
 
 # %%
 """
-### Evaluate the premium of the derivative
+### Evaluate the best premium of the derivative
 
 Now, we are ready to define the premium of the derivative.
 
