@@ -96,7 +96,7 @@ def lookback_option_payoff(prices: torch.Tensor, strike=1.03) -> torch.Tensor:
 
 # %%
 """
-## European Option
+## Experiment: European Option
 """
 
 # %%
