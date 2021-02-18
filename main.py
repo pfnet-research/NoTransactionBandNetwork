@@ -354,7 +354,7 @@ plt.plot(history_ntb, label="No-transaction band Network")
 plt.plot(history_ffn, label="Feed-forward Network")
 plt.xlabel("Number of epochs")
 plt.ylabel("Loss (Negative of expected utility)")
-plt.title("Learning histories for a European option")
+plt.title("Loss histories for a European option")
 plt.legend()
 plt.show()
 
