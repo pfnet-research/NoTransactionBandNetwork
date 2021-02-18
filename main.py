@@ -275,7 +275,7 @@ plt.hist(
     label="Feed-forward Network",
 )
 plt.title(
-    "Profit-loss histogram of 50000 price paths " "for a European option (before fit)"
+    "Profit-loss histograms of 50000 price paths " "for a European option (before fit)"
 )
 plt.xlabel("Profit-loss")
 plt.ylabel("Number of events")
@@ -327,7 +327,7 @@ def fit(
         loss.backward()
         optim.step()
 
-        iterations.desc = f"loss={loss:.5f}"
+        iterations.desc = f"Loss={loss:.5f}"
         history.append(loss.item())
 
     return history
@@ -349,7 +349,7 @@ plt.plot(history_ntb, label="No-transaction band Network")
 plt.plot(history_ffn, label="Feed-forward Network")
 plt.xlabel("Number of epochs")
 plt.ylabel("Loss (Negative of expected utility)")
-plt.title("Learning history for a European option")
+plt.title("Learning histories for a European option")
 plt.legend()
 plt.show()
 
@@ -383,7 +383,7 @@ plt.hist(
     label="Feed-forward Network",
 )
 plt.title(
-    "Profit-loss histogram of 50000 price paths " "for a European option (after fit)"
+    "Profit-loss histograms of 50000 price paths " "for a European option (after fit)"
 )
 plt.xlabel("Profit-loss")
 plt.ylabel("Number of events")
@@ -475,7 +475,7 @@ plt.plot(history_ntb, label="No-transaction band Network")
 plt.plot(history_ffn, label="Feed-forward Network")
 plt.xlabel("Number of epochs")
 plt.ylabel("Loss (Negative of expected utility)")
-plt.title("Learning history for a lookback option")
+plt.title("Learning histories for a lookback option")
 plt.legend()
 plt.show()
 
