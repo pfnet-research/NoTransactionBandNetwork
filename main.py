@@ -143,6 +143,7 @@ def compute_profit_and_loss(
 
     # Simulate hedging over time.
     hedge = 0
+    pnl = 0
     for n in range(prices.shape[0] - 1):
         # Prepare a model input.
         x_log_moneyness = prices[n, :, None].log()
@@ -160,7 +161,7 @@ def compute_profit_and_loss(
         pnl -= cost * torch.abs(hedge - prev_hedge) * prices[n]
 
     # Pay the option's payoff to the customer.
-    pnl = -payoff(prices)
+    pnl -= payoff(prices)
 
     return pnl
 
