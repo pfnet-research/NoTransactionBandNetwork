@@ -58,7 +58,9 @@ def to_numpy(tensor: torch.Tensor) -> np.array:
 ## Define derivatives
 
 We prepare a European option and a lookback option.
+
 European option is the most popular option.
+
 Lookback option is an exotic option whose payoff depends on the price history.
 """
 
@@ -141,7 +143,7 @@ def compute_profit_and_loss(
         n_paths, maturity=maturity, dt=dt, volatility=volatility, device=DEVICE
     )
 
-    hedge = 0
+    hedge = torch.zeros_like(prices[:1]).reshape(-1)
     pnl = 0
     # Simulate hedging over time.
     for n in range(prices.shape[0] - 1):
@@ -382,7 +384,7 @@ plt.show()
 """
 The learning histories above demonstrate that the no-transaction band network can be trained much quicker than the ordinary feed-forward network.
 
-The fluctuations observed after around 100th epoch are mostly due to variances of Monte Carlo paths of asset prices.
+The fluctuations observed after around 100th epoch are mostly due to variances of Monte Carlo paths of the asset prices.
 """
 
 # %%
@@ -480,12 +482,12 @@ The no-transaction band network allows for a cheaper price.
 """
 
 # %%
-print("Premium evaluated by no-transaction band network :\t", premium_ntb)
-print("Premium evaluated by feed-forward band network   :\t", premium_ffn)
+print("Premium of a European option evaluated by the no-transaction band network :\t", premium_ntb)
+print("Premium of a European option evaluated by the feed-forward band network   :\t", premium_ffn)
 
 # %%
 premium_reduced = (premium_ffn - premium_ntb) / premium_ffn * 100
-print("Reduced premium :\t", f"{premium_reduced:.4f} %")
+print("Reduced premium of a European option :\t", f"{premium_reduced:.4f} %")
 
 # %%
 """
@@ -493,7 +495,7 @@ print("Reduced premium :\t", f"{premium_reduced:.4f} %")
 
 Let us carry out the same experiment for a lookback option.
 
-Although we omit the cumulative maximum of the asset price, which is an important feature for a lookback option, for simlicity, the no-transaction band network attains fairly good hedging strategy.
+Although we omit the cumulative maximum of the asset price, which is an important feature for a lookback option, for simlicity, the no-transaction band network attains a fairly good hedging strategy.
 """
 
 # %%
@@ -528,8 +530,10 @@ plt.title("Learning histories for a lookback option")
 plt.legend()
 plt.show()
 
+# %%
 """
 Again, the above training histories exhibits that the no-transaction band network can be trained much quicker than the ordinary feed-forward network.
+
 Surprisingly, the no-transaction band network achieves its optima as fast as it learns to hedge a European option, even though the lookback option bears further complication of path-dependence and needs more features.
 """
 
@@ -550,11 +554,11 @@ The no-transaction band network again allows for a cheaper price.
 """
 
 # %%
-print("Premium evaluated by no-transaction band network :\t", premium_ntb)
-print("Premium evaluated by feed-forward band network   :\t", premium_ffn)
+print("Premium of a lookback option evaluated by the no-transaction band network :\t", premium_ntb)
+print("Premium of a lookback option evaluated by the feed-forward band network   :\t", premium_ffn)
 
 # %%
 premium_reduced = (premium_ffn - premium_ntb) / premium_ffn * 100
-print("Reduced premium :\t", f"{premium_reduced:.4f} %")
+print("Reduced premium of a lookback option :\t", f"{premium_reduced:.4f} %")
 
 # %%
