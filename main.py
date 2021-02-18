@@ -454,7 +454,7 @@ print("Reduced premium :\t", f"{premium_reduced:.4f} %")
 
 # %%
 """
-## Lookback Option
+## Experiment: Lookback Option
 """
 
 # %%
