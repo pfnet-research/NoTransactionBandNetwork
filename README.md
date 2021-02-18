@@ -11,9 +11,9 @@ Minimal implementation of "*No-Transaction Band Network: A Neural Network Archit
 * We propose a "*No-Transaction Band Network*" to overcome this issue.
 * This network circumvents the action-dependence and facilitates quick and precise computation of the optimal hedging.
 
-The learning histories below demonstrate that the no-transaction band network can be trained much quicker than the ordinary feed-forward network (See [`main.ipynb`](main.ipynb) for details).
+The learning histories below demonstrate that the no-transaction band network can be trained much quicker than the ordinary feed-forward network (See our paper for details).
 
-![loss_lookback](fig/loss_lookback.png)
+![loss_lookback](fig/lb_history_10.pdf)
 
 ## Proposed Architecture: No-Transaction Band Network
 
