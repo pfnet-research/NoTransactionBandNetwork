@@ -40,7 +40,7 @@ matplotlib.rcParams["lines.linewidth"] = 2
 matplotlib.rcParams["axes.linewidth"] = 1.6
 
 # %%
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+DEVICE = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
 # %%
 DEVICE
@@ -397,6 +397,8 @@ plt.show()
 Now, we are ready to define the premium of the derivative.
 
 Premium of a derivative is defined as the guaranteed amount of cash which is as preferable as the profit-loss after hedging in terms of the exponential utility.
+
+The no-transaction band network allows for a cheaper price.
 """
 
 # %%
@@ -436,11 +438,6 @@ torch.manual_seed(42)
 premium_ntb = evaluate_premium(model_ntb, european_option_payoff, cost=1e-3)
 torch.manual_seed(42)
 premium_ffn = evaluate_premium(model_ffn, european_option_payoff, cost=1e-3)
-
-# %%
-"""
-The no-transaction band network allows for a cheaper price.
-"""
 
 # %%
 print("Premium evaluated by no-transaction band network :\t", premium_ntb)
