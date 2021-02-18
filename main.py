@@ -171,10 +171,10 @@ def compute_profit_and_loss(
 Now let us create `hedging_model` as `torch.nn.Module`.
 
 We employ two models here:
-* **No-Transaction Band Network**:
-    - A multi-layer perceptron outputs a no-transaction band and the next hedge ratio is obtained by clamping the current hedge ratio into this band.
-    - Two outputs of the multi-layer perceptron are applied with [`LeakyReLU`](https://pytorch.org/docs/stable/generated/torch.nn.LeakyReLU.html#torch.nn.LeakyReLU) and then added and subtracted to the Black–Scholes’ delta to get the upper- and lower-bound of the no-transaction band, respectively.
-* **Feed-forward network**:
+* **No-Transaction Band Network** (proposed architecture):
+    - A multi-layer perceptron outputs a no-transaction band, and the next hedge ratio is obtained by clamping the current hedge ratio into this band.
+    - Two outputs of the multi-layer perceptron are applied with [`LeakyReLU`](https://pytorch.org/docs/stable/generated/torch.nn.LeakyReLU.html#torch.nn.LeakyReLU), and then added/subtracted to the Black–Scholes’ delta to get the upper/lower-bound of the no-transaction band, respectively.
+* **Feed-forward network** (baseline):
     - A multi-layer perception uses the current hedge ratio as an input to compute the next hedge ratio.
     - The output of a multi-layer perceptron is applied with [`tanh`](https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html#torch.nn.Tanh) function and then added to Black–Scholes’ delta to get the next hedge ratio.
 """
