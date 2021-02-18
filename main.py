@@ -41,8 +41,6 @@ matplotlib.rcParams["axes.linewidth"] = 1.6
 
 # %%
 DEVICE = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
-
-# %%
 DEVICE
 
 # %%
