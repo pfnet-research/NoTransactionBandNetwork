@@ -55,9 +55,11 @@ def to_numpy(tensor: torch.Tensor) -> np.array:
 
 # %%
 """
-## Prepare derivatives
+## Define derivatives
 
-We consider a European option and a lookback option.
+We prepare a European option and a lookback option.
+European option is the most popular option.
+Lookback option is a path-dependent option, and its payoff depends on the price history.
 """
 
 # %%
