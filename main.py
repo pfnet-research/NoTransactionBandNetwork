@@ -453,6 +453,11 @@ print("Reduced premium :\t", f"{premium_reduced:.4f} %")
 """
 
 # %%
+"""
+### Create hedging models
+"""
+
+# %%
 torch.manual_seed(42)
 model_ntb = NoTransactionBandNet().to(DEVICE)
 torch.manual_seed(42)
