@@ -486,7 +486,7 @@ plt.show()
 
 # %%
 """
-### Compute the profit-loss distributions after hedging
+### Evaluate the premium of the derivative
 """
 
 # %%
@@ -495,10 +495,6 @@ premium_ntb = evaluate_premium(model_ntb, lookback_option_payoff, cost=1e-3)
 torch.manual_seed(42)
 premium_ffn = evaluate_premium(model_ffn, lookback_option_payoff, cost=1e-3)
 
-# %%
-"""
-### Evaluate the premium of the derivative
-"""
 
 # %%
 print("Premium evaluated by no-transaction band network :\t", premium_ntb)
