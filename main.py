@@ -360,7 +360,7 @@ plt.show()
 
 # %%
 """
-### Compute the profit-loss distributions after hedging
+### Compute the profit-loss distributions with hedging
 
 The histograms of the profit and loss after hedging look like this.
 """
