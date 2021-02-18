@@ -322,20 +322,20 @@ def fit(
     """
     optim = Adam(hedging_model.parameters())
 
-    history = []
-    iterations = tqdm(range(n_epochs))
+    loss_history = []
+    progress = tqdm(range(n_epochs))
 
-    for _ in iterations:
+    for _ in progress:
         optim.zero_grad()
         pnl = compute_profit_and_loss(hedging_model, payoff, cost=cost)
         loss = entropic_loss(pnl)
         loss.backward()
         optim.step()
 
-        iterations.desc = f"Loss={loss:.5f}"
-        history.append(loss.item())
+        progress.desc = f"Loss={loss:.5f}"
+        loss_history.append(loss.item())
 
-    return history
+    return loss_history
 
 # %%
 torch.manual_seed(42)
