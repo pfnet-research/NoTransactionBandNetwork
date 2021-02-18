@@ -1,15 +1,15 @@
-# No-Transaction Band Network: A Neural Network Architecture for Efficient Deep Hedging
+<h1 align="center">No-Transaction Band Network: </br> A Neural Network Architecture for Efficient Deep Hedging</h1>
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/pfnet-reseaarch/NoTransactionBandNetwork/main.ipynb)
 
-Minimal implementation and experiments of "*No-Transaction Band Network: A Neural Network Architecture for Efficient Deep Hedging*".
+Minimal implementation of "*No-Transaction Band Network: A Neural Network Architecture for Efficient Deep Hedging*".
 
 ## TL;DR
 
 * [Deep Hedging](https://arxiv.org/abs/1802.03042) is a deep learning-based framework to compute the optimal hedging strategies of financial derivatives.
 * However, this optimal strategy is hard to train due to the action dependence, *i.e.*, the appropriate hedging action at the next step depends on the current action.
 * We propose a "*No-Transaction Band Network*" to overcome this issue.
-* This network circumvents the complication of action-dependence and facilitate quick and precise computation of the optimal hedging.
+* This network circumvents the action-dependence and facilitates quick and precise computation of the optimal hedging.
 
 The learning histories below demonstrate that the no-transaction band network can be trained much quicker than the ordinary feed-forward network (See [`main.ipynb`](main.ipynb) for details).
 
@@ -22,10 +22,10 @@ The following figures show the schematic diagrams of the neural network which wa
 ![nn](fig/nn.png)
 
 * **The original architecture**:
-  - The input of the neural network uses the current hedge ratio (`δ_ti`) as well as other information (`I_ti`) a human trader might use.
-  - Since the input of the neural network includes on the current action, this architecture bears the complication of action-dependence.
+  - The input of the neural network uses the current hedge ratio (`δ_ti`) as well as other information (`I_ti`).
+  - Since the input of the network includes on the current action `δ_ti`, this architecture suffers the complication of action-dependence.
 * **The no-transaction band network**:
-  - This architecture computes "no-transaction band" `[b_l, b_u]` by a neural network and then computes the next hedge ratio by `clamp`(https://pytorch.org/docs/stable/generated/torch.clamp.html?highlight=clamp#torch.clamp)ing the current hedge ratio inside this band.
+  - This architecture computes "no-transaction band" `[b_l, b_u]` by a neural network and then computes the next hedge ratio by [`clamp`](https://pytorch.org/docs/stable/generated/torch.clamp.html?highlight=clamp#torch.clamp)ing the current hedge ratio inside this band.
   - Since the input of the neural network does not use the current action, this architecture can circumvent the action-dependence.
 
 ## Give it a Try!
@@ -34,7 +34,7 @@ The following figures show the schematic diagrams of the neural network which wa
 
 The minimal implementation and experiments are provided in [`main.ipynb`](main.ipynb).
 
-More comprehensive library for Deep Hedging, `pfhedge`, is available on PyPI (See [pfnet-research/pfhedge](https://github.com/pfnet-research/pfhedge)).
+More comprehensive library for Deep Hedging, [`pfhedge`](https://github.com/pfnet-research/pfhedge), is available on PyPI.
 
 ## References
 
