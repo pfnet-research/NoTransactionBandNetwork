@@ -136,14 +136,14 @@ def compute_profit_and_loss(
     -------
     profit_and_loss : torch.Tensor, shape (n_paths,)
     """
-    # Prepare time-series of prices: (time, batch)
+    # Prepare time-series of prices with shape (time, batch)
     prices = generate_geometric_brownian_motion(
         n_paths, maturity=maturity, dt=dt, volatility=volatility, device=DEVICE
     )
 
-    # Simulate hedging over time.
     hedge = 0
     pnl = 0
+    # Simulate hedging over time.
     for n in range(prices.shape[0] - 1):
         # Prepare a model input.
         x_log_moneyness = prices[n, :, None].log()
@@ -205,16 +205,23 @@ class NoTransactionBandNet(torch.nn.Module):
 
     def __init__(self, in_features=3):
         super().__init__()
+
+        # A four-layer MLP with 32 hidden neurons in each layer
         self.mlp = MultiLayerPerceptron(in_features, 2)
 
     def forward(self, x, prev):
+        # Black-Scholes' delta in the absence of transaction cost
         no_cost_delta = european_option_delta(x[:, 0], x[:, 1], x[:, 2])
-        band_width = self.mlp(x)
 
+        # Compute no-transaction band using the multi-layer perceptron
+        band_width = self.mlp(x)
         lower = no_cost_delta - fn.leaky_relu(band_width[:, 0])
         upper = no_cost_delta + fn.leaky_relu(band_width[:, 1])
 
-        return clamp(prev, lower, upper)
+        # Hedge ratio at the next time step is obtained by clamping the previous one inside the band
+        hedge = clamp(prev, lower, upper)
+
+        return hedge
 
 # %%
 class FeedForwardNet(torch.nn.Module):
@@ -241,16 +248,21 @@ class FeedForwardNet(torch.nn.Module):
 
     def __init__(self, in_features=3):
         super().__init__()
+
+        # A four-layer MLP with 32 hidden neurons in each layer
         self.mlp = MultiLayerPerceptron(in_features + 1, 1)
 
     def forward(self, x, prev):
+        # Black-Scholes' delta in the absence of transaction cost
         no_cost_delta = european_option_delta(x[:, 0], x[:, 1], x[:, 2])
 
+        # Multi-layer perceptron directly computes the hedge ratio at the next time step
         x = torch.cat((x, prev.reshape(-1, 1)), 1)
         x = self.mlp(x).reshape(-1)
         x = torch.tanh(x)
+        hedge = no_cost_delta + x
 
-        return no_cost_delta + x
+        return hedge
 
 # %%
 torch.manual_seed(42)
@@ -292,6 +304,13 @@ plt.xlabel("Profit-loss")
 plt.ylabel("Number of events")
 plt.legend()
 plt.show()
+
+# %%
+"""
+The profit and loss distributions with hedging are shown in the histograms above.
+
+These distributions are not optimal since `hedgin_model`s are not yet trained.
+"""
 
 # %%
 """
@@ -350,11 +369,6 @@ torch.manual_seed(42)
 history_ffn = fit(model_ffn, european_option_payoff, cost=1e-3)
 
 # %%
-"""
-The learning histories below show that the no-transaction band network can be trained much quicker than the ordinary feed-forward network.
-"""
-
-# %%
 plt.figure()
 plt.plot(history_ntb, label="No-transaction band Network")
 plt.plot(history_ffn, label="Feed-forward Network")
@@ -366,9 +380,14 @@ plt.show()
 
 # %%
 """
-### Compute the profit-loss distributions with hedging
+The learning histories above demonstrate that the no-transaction band network can be trained much quicker than the ordinary feed-forward network.
 
-The histograms of the profit and loss after hedging look like this.
+The fluctuations observed after around 100th epoch are mostly due to variances of Monte Carlo paths of asset prices.
+"""
+
+# %%
+"""
+### Compute the profit-loss distributions with hedging
 """
 
 # %%
@@ -403,13 +422,18 @@ plt.show()
 
 # %%
 """
+The histograms of the profit and loss after hedging look like above.
+
+The no-transaction band network saves on transaction cost while avoiding great losses.
+"""
+
+# %%
+"""
 ### Evaluate the best premium of the derivative
 
 Now, we are ready to define the premium of the derivative.
 
 Premium of a derivative is defined as the guaranteed amount of cash which is as preferable as the profit-loss after hedging in terms of the exponential utility.
-
-The no-transaction band network allows for a cheaper price.
 """
 
 # %%
@@ -451,6 +475,11 @@ torch.manual_seed(42)
 premium_ffn = evaluate_premium(model_ffn, european_option_payoff, cost=1e-3)
 
 # %%
+"""
+The no-transaction band network allows for a cheaper price.
+"""
+
+# %%
 print("Premium evaluated by no-transaction band network :\t", premium_ntb)
 print("Premium evaluated by feed-forward band network   :\t", premium_ffn)
 
@@ -461,6 +490,10 @@ print("Reduced premium :\t", f"{premium_reduced:.4f} %")
 # %%
 """
 ## Experiment: Lookback Option
+
+Let us carry out the same experiment for a lookback option.
+
+Although we omit the cumulative maximum of the asset price, which is an important feature for a lookback option, for simlicity, the no-transaction band network attains fairly good hedging strategy.
 """
 
 # %%
@@ -495,6 +528,11 @@ plt.title("Learning histories for a lookback option")
 plt.legend()
 plt.show()
 
+"""
+Again, the above training histories exhibits that the no-transaction band network can be trained much quicker than the ordinary feed-forward network.
+Surprisingly, the no-transaction band network achieves its optima as fast as it learns to hedge a European option, even though the lookback option bears further complication of path-dependence and needs more features.
+"""
+
 # %%
 """
 ### Evaluate the best premium of the derivative
@@ -506,6 +544,10 @@ premium_ntb = evaluate_premium(model_ntb, lookback_option_payoff, cost=1e-3)
 torch.manual_seed(42)
 premium_ffn = evaluate_premium(model_ffn, lookback_option_payoff, cost=1e-3)
 
+# %%
+"""
+The no-transaction band network again allows for a cheaper price.
+"""
 
 # %%
 print("Premium evaluated by no-transaction band network :\t", premium_ntb)
