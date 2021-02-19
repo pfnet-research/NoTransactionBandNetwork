@@ -14,10 +14,10 @@ We believe that our proposal brings the data-driven derivative business via "*[D
 
 ## TL;DR
 
-* [Deep Hedging][deep-hedging-arxiv] is a deep learning-based framework to compute the optimal hedging strategies of financial derivatives.
-* However, this strategy is hard to train due to the action dependence, *i.e.*, an appropriate hedging action at the next step depends on the current action.
+* [Deep Hedging][deep-hedging-arxiv] is a deep learning-based framework to hedge financial derivatives.
+* However, a hedging strategy is hard to train due to the action dependence, *i.e.*, an appropriate hedging action at the next step depends on the current action.
 * We propose a "*No-Transaction Band Network*" to overcome this issue.
-* This network circumvents the action-dependence and facilitates quick and precise computation of the optimal hedging.
+* This network circumvents the action-dependence and facilitates quick and precise hedging.
 
 ## Motivation and Result
 
@@ -25,13 +25,13 @@ Hedging financial derivatives ([exotic options](https://en.wikipedia.org/wiki/Ex
 
 In the absence of transaction cost, the perfect hedge is accessible based on the [Black-Scholes model](https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model).
 The real market, in contrast, always involves transaction cost and thereby makes hedging optimization much more challenging.
-Since the analytic formula (such as the [Black-Scholes formula of European option](https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model#Black%E2%80%93Scholes_formula)) is no longer available in such a market, human traders may hedge and then price derivatives based on their experiences.
+Since the analytic formulas (such as the [Black-Scholes formula of European option](https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model#Black%E2%80%93Scholes_formula)) are no longer available in such a market, human traders may hedge and then price derivatives based on their experiences.
 
-Deep Hedging is a ground-breaking framework to automate and optimize such operation.
-In this framework, a neural network is trained to hedge derivatives so that it minimizes proper risk measure.
+[Deep Hedging][deep-hedging-arxiv] is a ground-breaking framework to automate and optimize such operation.
+In this framework, a neural network is trained to hedge derivatives so that it minimizes a proper risk measure.
 However, training in deep hedging suffers difficulty of action dependence since an appropriate action at the next step depends on the current action.
 
-We propose "*No-Transaction Band Network*" for efficient deep hedging.
+So, we propose "*No-Transaction Band Network*" for efficient deep hedging.
 This architecture circumvents the complication to facilitate quick training and better hedging.
 
 ![loss_lookback](fig/lb_history_10.png)
@@ -61,6 +61,7 @@ The following figures show the schematic diagrams of the neural network which wa
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/pfnet-reseaarch/NoTransactionBandNetwork/main.ipynb)
 
 You can try out the efficacy of *No-Transaction Band Network* on a Jupyter Notebook: [`main.ipynb`](main.ipynb).
+
 As you can see there, the no-transaction-band can be implemented by simply adding one special layer to an arbitrary neural network.
 
 More comprehensive library for Deep Hedging, [`pfhedge`](https://github.com/pfnet-research/pfhedge), is available on PyPI.
