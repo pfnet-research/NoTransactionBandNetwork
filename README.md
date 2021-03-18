@@ -2,7 +2,7 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/pfnet-reseaarch/NoTransactionBandNetwork/main.ipynb)
 
-Minimal implementation and experiments of "*No-Transaction Band Network: A Neural Network Architecture for Efficient Deep Hedging*".
+Minimal implementation and experiments of "[*No-Transaction Band Network: A Neural Network Architecture for Efficient Deep Hedging*][ntb-network-arxiv]".
 
 Hedging and pricing financial derivatives while taking into account transaction costs is a tough task.
 Since the hedging optimization is computationally expensive or even inaccessible, risk premiums of derivatives are often overpriced.
@@ -12,7 +12,7 @@ Our proposal, "*No-Transaction Band Network*", enables precise hedging with much
 This improvement leads to the offering of cheaper risk premiums and thus liquidizes the derivative market.
 We believe that our proposal brings the data-driven derivative business via "*[Deep Hedging][deep-hedging-arxiv]*" much closer to practical applications.
 
-## TL;DR
+## Summary
 
 * [Deep Hedging][deep-hedging-arxiv] is a deep learning-based framework to hedge financial derivatives.
 * However, a hedging strategy is hard to train due to the action dependence, *i.e.*, an appropriate hedging action at the next step depends on the current action.
@@ -45,7 +45,7 @@ The no-transaction-band network attains cheaper prices than the ordinary network
 
 ## Proposed Architecture: No-Transaction Band Network
 
-The following figures show the schematic diagrams of the neural network which was originally proposed in [Deep Hedging][deep-hedging-arxiv] (left) and the no-transaction band network (right).
+The following figures show the schematic diagrams of the neural network which was originally proposed in [Deep Hedging][deep-hedging-arxiv] (left) and the [no-transaction band network][ntb-network-arxiv] (right).
 
 ![nn](fig/nn.png)
 
@@ -68,9 +68,10 @@ A comprehensive library for Deep Hedging, [`pfhedge`](https://github.com/pfnet-r
 
 ## References
 
-* Shota Imaki, Kentaro Imajo, Katsuya Ito, Kentaro Minami and Kei Nakagawa, "No-Transaction Band Network: A Neural Network Architecture for Efficient Deep Hedging".
+* Shota Imaki, Kentaro Imajo, Katsuya Ito, Kentaro Minami and Kei Nakagawa, "No-Transaction Band Network: A Neural Network Architecture for Efficient Deep Hedging". arXiv:[2103.01775][ntb-network-arxiv] \[q-fin.CP\].
 * 今木翔太, 今城健太郎, 伊藤克哉, 南賢太郎, 中川慧, "[効率的な Deep Hedging のためのニューラルネットワーク構造](https://sigfin.org/026-15/)", 人工知能学 金融情報学研究会（SIG-FIN）第 26 回研究会.
 * Hans Bühler, Lukas Gonon, Josef Teichmann and Ben Wood, "[Deep hedging][deep-hedging-qf]". Quantitative Finance, 2019, 19, 1271–1291. arXiv:[1609.05213][deep-hedging-arxiv] [q-fin.CP].
 
 [deep-hedging-arxiv]: https://arxiv.org/abs/1802.03042
 [deep-hedging-qf]: https://doi.org/10.1080/14697688.2019.1571683
+[ntb-network-arxiv]: https://arxiv.org/abs/2103.01775
