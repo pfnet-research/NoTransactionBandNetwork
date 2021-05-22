@@ -1,6 +1,6 @@
 <h1 align="center">No-Transaction Band Network: </br> A Neural Network Architecture for Efficient Deep Hedging</h1>
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/pfnet-reseaarch/NoTransactionBandNetwork/main.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)][colab-notebook]
 
 Minimal implementation and experiments of "[*No-Transaction Band Network: A Neural Network Architecture for Efficient Deep Hedging*][ntb-network-arxiv]".
 
@@ -53,12 +53,12 @@ The following figures show the schematic diagrams of the neural network which wa
   - The input of the neural network uses the current hedge ratio (`δ_ti`) as well as other information (`I_ti`).
   - Since the input includes the current action `δ_ti`, this network suffers the complication of action-dependence.
 * **The no-transaction band network**:
-  - This architecture computes "no-transaction band" `[b_l, b_u]` by a neural network and then gets the next hedge ratio by [`clamp`](https://pytorch.org/docs/stable/generated/torch.clamp.html?highlight=clamp#torch.clamp)ing the current hedge ratio inside this band.
+  - This architecture computes "no-transaction band" `[b_l, b_u]` by a neural network and then gets the next hedge ratio by [`clamp`](https://pytorch.org/docs/stable/generated/torch.clamp.html)ing the current hedge ratio inside this band.
   - Since the input of the neural network does not use the current action, this architecture can circumvent the action-dependence and facilitate training.
 
 ## Give it a Try!
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/pfnet-reseaarch/NoTransactionBandNetwork/main.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)][colab-notebook]
 
 You can try out the efficacy of *No-Transaction Band Network* on a Jupyter Notebook: [`main.ipynb`](main.ipynb).
 
@@ -75,3 +75,4 @@ A comprehensive library for Deep Hedging, [`pfhedge`](https://github.com/pfnet-r
 [deep-hedging-arxiv]: https://arxiv.org/abs/1802.03042
 [deep-hedging-qf]: https://doi.org/10.1080/14697688.2019.1571683
 [ntb-network-arxiv]: https://arxiv.org/abs/2103.01775
+[colab-notebook]: https://colab.research.google.com/github/pfnet-research/NoTransactionBandNetwork/blob/main/main.ipynb
